@@ -1,0 +1,403 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 280px;
+  transition: margin-left 0.3s ease;
+}
+
+.mainContent.expanded {
+  margin-left: 80px;
+}
+
+.dashboardContent {
+  padding: 30px;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.statCard {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  animation: slideUp 0.5s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1);
+}
+
+.statIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statIcon svg {
+  width: 28px;
+  height: 28px;
+  stroke: white;
+}
+
+.statDetails {
+  flex: 1;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.statChange {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.statChange svg {
+  width: 16px;
+  height: 16px;
+}
+
+.statChange.positive {
+  color: #10b981;
+}
+
+.statChange.positive svg {
+  stroke: #10b981;
+}
+
+.statChange.negative {
+  color: #ef4444;
+}
+
+.statChange.negative svg {
+  stroke: #ef4444;
+}
+
+/* Chart Section */
+.chartSection {
+  margin-bottom: 30px;
+  animation: slideUp 0.6s ease;
+}
+
+.chartCard {
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.chartTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1f2937;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.chartActions {
+  display: flex;
+  gap: 8px;
+}
+
+.chartButton {
+  padding: 8px 16px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.chartButton:hover {
+  border-color: #667EEA;
+  color: #667EEA;
+}
+
+.chartButton.active {
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  border-color: transparent;
+  color: white;
+}
+
+.chartPlaceholder {
+  height: 400px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(102, 126, 234, 0.3);
+}
+
+.chartPlaceholderContent {
+  text-align: center;
+  color: #6b7280;
+}
+
+.chartIcon {
+  width: 64px;
+  height: 64px;
+  stroke: #667EEA;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.chartPlaceholderContent p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.chartPlaceholderContent span {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* Portfolio Section */
+.portfolioSection {
+  animation: slideUp 0.7s ease;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.viewAllButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.viewAllButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -4px rgba(102, 126, 234, 0.4);
+}
+
+.viewAllButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.portfolioGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.portfolioCard {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.portfolioCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1);
+}
+
+.portfolioHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.portfolioIcon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolioIcon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #667EEA;
+}
+
+.portfolioChange {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.portfolioChange.positive {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.portfolioChange.negative {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.portfolioName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.portfolioMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portfolioStocks {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.portfolioValue {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .mainContent {
+    margin-left: 0;
+  }
+  
+  .mainContent.expanded {
+    margin-left: 0;
+  }
+  
+  .dashboardContent {
+    padding: 20px;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  
+  .chartPlaceholder {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chartHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .chartActions {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .portfolioGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .statValue {
+    font-size: 24px;
+  }
+}

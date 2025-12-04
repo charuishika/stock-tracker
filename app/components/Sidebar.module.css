@@ -1,0 +1,203 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 280px;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+/* Header */
+.sidebarHeader {
+  padding: 24px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+
+.toggleButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f3f4f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggleButton:hover {
+  background: #e5e7eb;
+}
+
+.toggleButton svg {
+  width: 18px;
+  height: 18px;
+  stroke: #6b7280;
+}
+
+/* Navigation */
+.sidebarNav {
+  flex: 1;
+  padding: 20px 12px;
+  overflow-y: auto;
+}
+
+.navItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 6px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+}
+
+.collapsed .navItem {
+  justify-content: center;
+  padding: 14px;
+}
+
+.navItem:hover {
+  background: #f9fafb;
+}
+
+.navItem.active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.navIcon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navIcon svg {
+  width: 100%;
+  height: 100%;
+  stroke: #6b7280;
+  transition: stroke 0.3s ease;
+}
+
+.navItem.active .navIcon svg {
+  stroke: #667EEA;
+}
+
+.navItem:hover .navIcon svg {
+  stroke: #667EEA;
+}
+
+.navLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: #4b5563;
+  transition: color 0.3s ease;
+}
+
+.navItem.active .navLabel {
+  color: #667EEA;
+  font-weight: 600;
+}
+
+.navItem:hover .navLabel {
+  color: #667EEA;
+}
+
+.activeIndicator {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  border-radius: 4px 0 0 4px;
+}
+
+.navDivider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 12px 0;
+}
+
+.navItem.logout {
+  color: #ef4444;
+}
+
+.navItem.logout .navIcon svg {
+  stroke: #ef4444;
+}
+
+.navItem.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.collapsed {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-width: 280px;
+  }
+}
