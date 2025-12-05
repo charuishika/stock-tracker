@@ -1,8 +1,5 @@
 'use client';
 
-import "@/app/lib/firestoreUtils";
-
-
 import { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
@@ -22,8 +19,8 @@ export default function Dashboard() {
       isPositive: true,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <line x1="12" y1="1" x2="12" y2="23"></line>
-          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          <line x1="12" y1="1" x2="12" y2="23" />
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </svg>
       ),
       gradient: 'linear-gradient(135deg, #667EEA 0%, #764BA2 100%)'
@@ -37,8 +34,8 @@ export default function Dashboard() {
       isPositive: true,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-          <polyline points="17 6 23 6 23 12"></polyline>
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+          <polyline points="17 6 23 6 23 12" />
         </svg>
       ),
       gradient: 'linear-gradient(135deg, #2563EB 0%, #4F46E5 100%)'
@@ -52,7 +49,7 @@ export default function Dashboard() {
       isPositive: true,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
         </svg>
       ),
       gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
@@ -66,8 +63,8 @@ export default function Dashboard() {
       isPositive: true,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
         </svg>
       ),
       gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
@@ -113,6 +110,7 @@ export default function Dashboard() {
         <Navbar onMenuClick={() => setSidebarCollapsed(!sidebarCollapsed)} />
         
         <main className={styles.dashboardContent}>
+          
           {/* Stats Cards Grid */}
           <div className={styles.statsGrid}>
             {statsData.map((stat) => (
@@ -125,7 +123,7 @@ export default function Dashboard() {
                   <h3 className={styles.statValue}>{stat.value}</h3>
                   <p className={`${styles.statChange} ${stat.isPositive ? styles.positive : styles.negative}`}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points={stat.isPositive ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
+                      <polyline points={stat.isPositive ? "18 15 12 9 6 15" : "6 9 12 15 18 9"} />
                     </svg>
                     <span>{stat.change} {stat.changeLabel}</span>
                   </p>
@@ -151,8 +149,8 @@ export default function Dashboard() {
               <div className={styles.chartPlaceholder}>
                 <div className={styles.chartPlaceholderContent}>
                   <svg className={styles.chartIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                    <polyline points="17 6 23 6 23 12"></polyline>
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                    <polyline points="17 6 23 6 23 12" />
                   </svg>
                   <p>Chart placeholder</p>
                   <span>Implement with Chart.js or Recharts later</span>
@@ -168,7 +166,7 @@ export default function Dashboard() {
               <button className={styles.viewAllButton}>
                 View All
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="9 18 15 12 9 6"></polyline>
+                  <polyline points="9 18 15 12 9 6" />
                 </svg>
               </button>
             </div>
@@ -179,8 +177,8 @@ export default function Dashboard() {
                   <div className={styles.portfolioHeader}>
                     <div className={styles.portfolioIcon}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
                       </svg>
                     </div>
                     <span className={`${styles.portfolioChange} ${portfolio.isPositive ? styles.positive : styles.negative}`}>
@@ -196,6 +194,7 @@ export default function Dashboard() {
               ))}
             </div>
           </div>
+
         </main>
       </div>
     </div>

@@ -105,6 +105,12 @@
   padding: 14px;
 }
 
+.sidebar.collapsed .navItem {
+  justify-content: center;
+  padding: 14px;
+}
+
+
 .navItem:hover {
   background: #f9fafb;
 }

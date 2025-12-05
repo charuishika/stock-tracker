@@ -18,18 +18,19 @@ import { db } from "./firebase";
 
 /* ===============================================================
    USERS COLLECTION
-   Stored when a user logs in for the first time
 ================================================================ */
 
 export async function createUserIfNotExists(user) {
   try {
+    if (!user || !user.uid) return;
+
     const userRef = doc(db, "users", user.uid);
     const snapshot = await getDoc(userRef);
 
     if (!snapshot.exists()) {
       await setDoc(userRef, {
-        name: user.displayName,
-        email: user.email,
+        name: user.displayName || "User",
+        email: user.email || "",
         photo: user.photoURL || "",
         createdAt: serverTimestamp(),
       });
@@ -37,33 +38,41 @@ export async function createUserIfNotExists(user) {
 
   } catch (err) {
     console.error("Error creating user:", err);
+    throw err;
   }
 }
 
 /* ===============================================================
    PORTFOLIOS COLLECTION
-   Each portfolio belongs to one user
 ================================================================ */
 
-// CREATE portfolio
 export async function createPortfolio(userId, portfolioName) {
   try {
+    if (!userId) throw new Error("User ID missing");
+    if (!portfolioName || portfolioName.trim() === "")
+      throw new Error("Portfolio name cannot be empty");
+
     const ref = await addDoc(collection(db, "portfolios"), {
       userId,
-      portfolioName,
+      portfolioName: portfolioName.trim(),
       createdAt: serverTimestamp(),
     });
 
-    return ref.id;
+    return {
+      id: ref.id,
+      success: true
+    };
 
   } catch (err) {
     console.error("Error creating portfolio:", err);
+    throw err;
   }
 }
 
-// GET portfolios for a user
 export async function getPortfolios(userId) {
   try {
+    if (!userId) return [];
+
     const q = query(
       collection(db, "portfolios"),
       where("userId", "==", userId)
@@ -82,36 +91,49 @@ export async function getPortfolios(userId) {
   }
 }
 
-// DELETE portfolio
 export async function deletePortfolio(portfolioId) {
   try {
+    if (!portfolioId) throw new Error("Portfolio ID required");
+
     await deleteDoc(doc(db, "portfolios", portfolioId));
+
+    return { success: true };
+
   } catch (err) {
     console.error("Error deleting portfolio:", err);
+    throw err;
   }
 }
 
 /* ===============================================================
-   STOCK TRANSACTIONS COLLECTION
-   Tracks all buy/sell activity of each portfolio
+   TRANSACTIONS COLLECTION
 ================================================================ */
 
-// ADD transaction
 export async function addTransaction(data) {
   try {
-    return await addDoc(collection(db, "stockTransactions"), {
+    if (!data || !data.portfolioId)
+      throw new Error("Portfolio ID is required for transaction");
+
+    const ref = await addDoc(collection(db, "stockTransactions"), {
       ...data,
       createdAt: serverTimestamp()
     });
 
+    return {
+      id: ref.id,
+      success: true
+    };
+
   } catch (err) {
     console.error("Error adding transaction:", err);
+    throw err;
   }
 }
 
-// GET transactions of a portfolio
 export async function getTransactions(portfolioId) {
   try {
+    if (!portfolioId) return [];
+
     const q = query(
       collection(db, "stockTransactions"),
       where("portfolioId", "==", portfolioId)
@@ -130,40 +152,54 @@ export async function getTransactions(portfolioId) {
   }
 }
 
-// DELETE transaction
 export async function deleteTransaction(txnId) {
   try {
+    if (!txnId) throw new Error("Transaction ID required");
+
     await deleteDoc(doc(db, "stockTransactions", txnId));
+
+    return { success: true };
+
   } catch (err) {
     console.error("Error deleting transaction:", err);
+    throw err;
   }
 }
 
 /* ===============================================================
    PORTFOLIO STATS
-   Calculates totals for dashboard display
 ================================================================ */
 
 export async function getPortfolioStats(portfolioId) {
-  const txns = await getTransactions(portfolioId);
+  try {
+    const txns = await getTransactions(portfolioId);
 
-  let totalInvestment = 0;
-  let currentValue = 0;   // live API prices can be added later
-  let realizedPL = 0;
+    let totalInvestment = 0;
+    let currentValue = 0;
+    let realizedPL = 0;
 
-  txns.forEach((t) => {
-    const amount = t.quantity * t.price;
+    txns.forEach((t) => {
+      const amount = t.quantity * t.price;
 
-    if (t.buyOrSell === "buy") {
-      totalInvestment += amount;
-    } else if (t.buyOrSell === "sell") {
-      realizedPL += amount;
-    }
-  });
+      if (t.buyOrSell === "buy") {
+        totalInvestment += amount;
+      } else if (t.buyOrSell === "sell") {
+        realizedPL += amount;
+      }
+    });
 
-  return {
-    totalInvestment,
-    currentValue,
-    realizedPL
-  };
+    return {
+      totalInvestment,
+      currentValue,
+      realizedPL
+    };
+
+  } catch (err) {
+    console.error("Error calculating stats:", err);
+    return {
+      totalInvestment: 0,
+      currentValue: 0,
+      realizedPL: 0
+    };
+  }
 }

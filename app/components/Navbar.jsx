@@ -1,21 +1,28 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 
 export default function Navbar({ onMenuClick }) {
+
+    // Cache buster stored once → Fix React purity error
+    const [cacheBuster] = useState(Date.now());
+
     const [userData, setUserData] = useState({
         displayName: 'User',
         email: 'user@example.com',
         photoURL: null
     });
 
-    // --- Load user data from localStorage ---
+    // Load user data from localStorage
     useEffect(() => {
         try {
             const storedData = localStorage.getItem('userData');
+
             if (storedData) {
                 const parsed = JSON.parse(storedData);
+
                 setUserData({
                     displayName: parsed.displayName || parsed.name || 'User',
                     email: parsed.email || 'user@example.com',
@@ -27,7 +34,7 @@ export default function Navbar({ onMenuClick }) {
         }
     }, []);
 
-    // --- Utility to generate initials ---
+    // Profile initials fallback
     const getInitials = (name) => {
         if (!name) return 'U';
         const parts = name.trim().split(' ');
@@ -37,10 +44,11 @@ export default function Navbar({ onMenuClick }) {
         return name.substring(0, 2).toUpperCase();
     };
 
-    // --- Handle broken Google image URLs gracefully ---
+    // Hide image if broken
     const handleImageError = (e) => {
-        e.target.style.display = "none"; // hide broken image
-        e.target.parentNode.querySelector(`.${styles.avatarPlaceholder}`).style.display = "flex";
+        e.target.style.display = "none";
+        const placeholder = e.target.parentNode.querySelector(`.${styles.avatarPlaceholder}`);
+        if (placeholder) placeholder.style.display = "flex";
     };
 
     return (
@@ -90,7 +98,7 @@ export default function Navbar({ onMenuClick }) {
                         {userData.photoURL ? (
                             <>
                                 <img
-                                    src={`${userData.photoURL}&t=${Date.now()}`}
+                                    src={`${userData.photoURL}&t=${cacheBuster}`}
                                     alt={userData.displayName}
                                     className={styles.avatarImg}
                                     onError={handleImageError}
@@ -106,7 +114,6 @@ export default function Navbar({ onMenuClick }) {
                         )}
                     </div>
                 </div>
-
             </div>
         </header>
     );

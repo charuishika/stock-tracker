@@ -1,16 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './Sidebar.module.css';
 import { logoutUser } from "@/app/lib/logout";
 
 export default function Sidebar({ collapsed, onToggle }) {
+
+    const router = useRouter();
     const [activeItem, setActiveItem] = useState('dashboard');
 
     const menuItems = [
         {
             id: 'dashboard',
             label: 'Dashboard',
+            path: '/dashboard',
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <rect x="3" y="3" width="7" height="7"></rect>
@@ -22,7 +26,8 @@ export default function Sidebar({ collapsed, onToggle }) {
         },
         {
             id: 'portfolios',
-            label: 'My Portfolios',
+            label: 'Portfolios',
+            path: '/portfolios', // LIST + ADD inside this page
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -31,19 +36,9 @@ export default function Sidebar({ collapsed, onToggle }) {
             )
         },
         {
-            id: 'add-portfolio',
-            label: 'Add Portfolio',
-            icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="16"></line>
-                    <line x1="8" y1="12" x2="16" y2="12"></line>
-                </svg>
-            )
-        },
-        {
             id: 'transactions',
             label: 'Transactions',
+            path: '/transactions',
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
@@ -53,6 +48,7 @@ export default function Sidebar({ collapsed, onToggle }) {
         {
             id: 'profile',
             label: 'Profile',
+            path: '/profile',
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -64,6 +60,7 @@ export default function Sidebar({ collapsed, onToggle }) {
 
     return (
         <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
+            
             {/* Header */}
             <div className={styles.sidebarHeader}>
                 <div className={styles.logo}>
@@ -87,6 +84,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                     </div>
                     {!collapsed && <span className={styles.logoText}>PortfoTrack</span>}
                 </div>
+
                 <button className={styles.toggleButton} onClick={onToggle}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         {collapsed ? (
@@ -104,10 +102,15 @@ export default function Sidebar({ collapsed, onToggle }) {
                     <button
                         key={item.id}
                         className={`${styles.navItem} ${activeItem === item.id ? styles.active : ''}`}
-                        onClick={() => setActiveItem(item.id)}
+                        onClick={() => {
+                            setActiveItem(item.id);
+                            router.push(item.path);
+                        }}
                     >
                         <div className={styles.navIcon}>{item.icon}</div>
+
                         {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
+
                         {!collapsed && activeItem === item.id && (
                             <div className={styles.activeIndicator}></div>
                         )}
@@ -131,7 +134,6 @@ export default function Sidebar({ collapsed, onToggle }) {
                     {!collapsed && <span className={styles.navLabel}>Logout</span>}
                 </button>
             </nav>
-
         </aside>
     );
 }
