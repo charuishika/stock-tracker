@@ -3,7 +3,15 @@
 import React, { useState } from 'react';
 import styles from './Profile.module.css';
 
+import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
+import { useState as useReactState } from "react";
+
 const Profile = () => {
+
+  // Sidebar toggle 
+  const [sidebarCollapsed, setSidebarCollapsed] = useReactState(false);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   
   // Sample user data
@@ -15,12 +23,10 @@ const Profile = () => {
 
   const handleEdit = () => {
     console.log('Edit profile clicked');
-    // Add your edit logic here
   };
 
   const handleLogout = () => {
     console.log('Logout clicked');
-    // Redirect to login page
     window.location.href = '/login';
   };
 
@@ -30,7 +36,6 @@ const Profile = () => {
 
   const handleDeleteConfirm = () => {
     console.log('Account deleted');
-    // Add your delete logic here
     setShowDeleteModal(false);
   };
 
@@ -39,57 +44,76 @@ const Profile = () => {
   };
 
   return (
-    <div className={styles.profileContainer}>
-      {/* Title Card */}
-      <div className={styles.card}>
-        <h1 className={styles.gradientText}>User Profile</h1>
-      </div>
+    <div className={styles.pageContainer}>
+      
+      {/* === Sidebar === */}
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+      />
 
-      {/* User Info Card */}
-      <div className={styles.card}>
-        <div className={styles.userInfoCard}>
-          <div className={styles.avatar}>
-            {user.initials}
+      {/* === Main Content Wrapper === */}
+      <div className={`${styles.mainContent} ${sidebarCollapsed ? styles.expanded : ''}`}>
+        
+        {/* === Navbar === */}
+        <Navbar onMenuClick={() => setSidebarCollapsed(!sidebarCollapsed)} />
+
+        {/* === Profile Content (your friend's UI kept 100% same) === */}
+        <main className={styles.profileContainer}>
+
+          {/* Title Card */}
+          <div className={styles.card}>
+            <h1 className={styles.gradientText}>User Profile</h1>
           </div>
-          <div className={styles.userDetails}>
-            <h2 className={styles.userName}>{user.name}</h2>
-            <p className={styles.userEmail}>{user.email}</p>
+
+          {/* User Info Card */}
+          <div className={styles.card}>
+            <div className={styles.userInfoCard}>
+              <div className={styles.avatar}>
+                {user.initials}
+              </div>
+              <div className={styles.userDetails}>
+                <h2 className={styles.userName}>{user.name}</h2>
+                <p className={styles.userEmail}>{user.email}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Action Buttons Card */}
-      <div className={styles.card}>
-        <div className={styles.actionsCard}>
-          <button className={`${styles.btn} ${styles.btnEdit}`} onClick={handleEdit}>
-            Edit Profile
-          </button>
-          <button className={`${styles.btn} ${styles.btnLogout}`} onClick={handleLogout}>
-            Logout
-          </button>
-          <button className={`${styles.btn} ${styles.btnDelete}`} onClick={handleDeleteClick}>
-            Delete Account
-          </button>
-        </div>
-      </div>
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-        <div className={styles.modalOverlay} onClick={handleDeleteCancel}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h3>Confirm Delete</h3>
-            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-            <div className={styles.modalActions}>
-              <button className={`${styles.btn} ${styles.btnCancel}`} onClick={handleDeleteCancel}>
-                Cancel
+          {/* Action Buttons Card */}
+          <div className={styles.card}>
+            <div className={styles.actionsCard}>
+              <button className={`${styles.btn} ${styles.btnEdit}`} onClick={handleEdit}>
+                Edit Profile
               </button>
-              <button className={`${styles.btn} ${styles.btnDelete}`} onClick={handleDeleteConfirm}>
-                Yes, Delete
+              <button className={`${styles.btn} ${styles.btnLogout}`} onClick={handleLogout}>
+                Logout
+              </button>
+              <button className={`${styles.btn} ${styles.btnDelete}`} onClick={handleDeleteClick}>
+                Delete Account
               </button>
             </div>
           </div>
-        </div>
-      )}
+
+          {/* Delete Confirmation Modal */}
+          {showDeleteModal && (
+            <div className={styles.modalOverlay} onClick={handleDeleteCancel}>
+              <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                <h3>Confirm Delete</h3>
+                <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                <div className={styles.modalActions}>
+                  <button className={`${styles.btn} ${styles.btnCancel}`} onClick={handleDeleteCancel}>
+                    Cancel
+                  </button>
+                  <button className={`${styles.btn} ${styles.btnDelete}`} onClick={handleDeleteConfirm}>
+                    Yes, Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </main>
+      </div>
     </div>
   );
 };

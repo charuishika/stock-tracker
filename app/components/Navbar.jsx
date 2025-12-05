@@ -2,11 +2,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './Navbar.module.css';
 
 export default function Navbar({ onMenuClick }) {
 
-    // Cache buster stored once → Fix React purity error
+    const pathname = usePathname();
+
+    // Cache buster → fixes LCP + purity issues
     const [cacheBuster] = useState(Date.now());
 
     const [userData, setUserData] = useState({
@@ -15,14 +18,12 @@ export default function Navbar({ onMenuClick }) {
         photoURL: null
     });
 
-    // Load user data from localStorage
+    // Load user from localStorage
     useEffect(() => {
         try {
             const storedData = localStorage.getItem('userData');
-
             if (storedData) {
                 const parsed = JSON.parse(storedData);
-
                 setUserData({
                     displayName: parsed.displayName || parsed.name || 'User',
                     email: parsed.email || 'user@example.com',
@@ -30,11 +31,25 @@ export default function Navbar({ onMenuClick }) {
                 });
             }
         } catch (error) {
-            console.error('Error reading user data from localStorage:', error);
+            console.error('Error loading user:', error);
         }
     }, []);
 
-    // Profile initials fallback
+    // Page title generator
+    const getPageTitle = () => {
+        if (!pathname) return "Dashboard";
+
+        if (pathname.startsWith("/dashboard")) return "Dashboard";
+        if (pathname.startsWith("/portfolios")) return "My Portfolios";
+        if (pathname.startsWith("/transactions")) return "Transactions";
+        if (pathname.startsWith("/profile")) return "Profile";
+
+        return "Dashboard";
+    };
+
+    const pageTitle = getPageTitle();
+
+    // Generate initials fallback
     const getInitials = (name) => {
         if (!name) return 'U';
         const parts = name.trim().split(' ');
@@ -44,16 +59,17 @@ export default function Navbar({ onMenuClick }) {
         return name.substring(0, 2).toUpperCase();
     };
 
-    // Hide image if broken
+    // Hide broken images
     const handleImageError = (e) => {
         e.target.style.display = "none";
-        const placeholder = e.target.parentNode.querySelector(`.${styles.avatarPlaceholder}`);
-        if (placeholder) placeholder.style.display = "flex";
+        const fallback = e.target.parentNode.querySelector(`.${styles.avatarPlaceholder}`);
+        if (fallback) fallback.style.display = "flex";
     };
 
     return (
         <header className={styles.navbar}>
             <div className={styles.navbarLeft}>
+                {/* Mobile menu button */}
                 <button className={styles.mobileMenuBtn} onClick={onMenuClick}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -62,14 +78,15 @@ export default function Navbar({ onMenuClick }) {
                     </svg>
                 </button>
 
+                {/* Dynamic Page Heading */}
                 <div className={styles.greeting}>
-                    <h1 className={styles.greetingText}>Hi, {userData.displayName} 👋</h1>
-                    <p className={styles.greetingSubtext}>Welcome back to your dashboard</p>
+                    <h1 className={styles.greetingText}>{pageTitle}</h1>
+                    <p className={styles.greetingSubtext}>Hi {userData.displayName}, welcome back 👋</p>
                 </div>
             </div>
 
             <div className={styles.navbarRight}>
-                
+
                 {/* Notifications */}
                 <button className={styles.iconButton}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -87,7 +104,7 @@ export default function Navbar({ onMenuClick }) {
                     </svg>
                 </button>
 
-                {/* User Profile */}
+                {/* Profile Box */}
                 <div className={styles.userProfile}>
                     <div className={styles.userInfo}>
                         <span className={styles.userName}>{userData.displayName}</span>
@@ -114,6 +131,7 @@ export default function Navbar({ onMenuClick }) {
                         )}
                     </div>
                 </div>
+
             </div>
         </header>
     );

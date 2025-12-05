@@ -1,3 +1,35 @@
+/* === LAYOUT WRAPPER === */
+
+.pageContainer {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.05),
+    rgba(118, 75, 162, 0.05)
+  );
+  font-family: 'Poppins', sans-serif;
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 280px;
+  transition: margin-left 0.3s ease;
+}
+
+.mainContent.expanded {
+  margin-left: 80px;
+}
+
+/* Ensure profile content fits into the layout */
+.profileContainer {
+  padding: 30px;
+}
+/* === END LAYOUT WRAPPER === */
+
+
+
+
 /* Profile.module.css */
 
 .profileContainer {

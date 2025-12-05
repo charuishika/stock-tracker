@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import styles from './Sidebar.module.css';
 import { logoutUser } from "@/app/lib/logout";
 
 export default function Sidebar({ collapsed, onToggle }) {
 
     const router = useRouter();
-    const [activeItem, setActiveItem] = useState('dashboard');
+    const pathname = usePathname();   // <-- Automatically detect current route
 
     const menuItems = [
         {
@@ -27,7 +27,7 @@ export default function Sidebar({ collapsed, onToggle }) {
         {
             id: 'portfolios',
             label: 'Portfolios',
-            path: '/portfolios', // LIST + ADD inside this page
+            path: '/portfolios',
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -58,9 +58,11 @@ export default function Sidebar({ collapsed, onToggle }) {
         }
     ];
 
+    const isActive = (path) => pathname === path || pathname.startsWith(path);
+
     return (
         <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
-            
+
             {/* Header */}
             <div className={styles.sidebarHeader}>
                 <div className={styles.logo}>
@@ -101,17 +103,14 @@ export default function Sidebar({ collapsed, onToggle }) {
                 {menuItems.map((item) => (
                     <button
                         key={item.id}
-                        className={`${styles.navItem} ${activeItem === item.id ? styles.active : ''}`}
-                        onClick={() => {
-                            setActiveItem(item.id);
-                            router.push(item.path);
-                        }}
+                        className={`${styles.navItem} ${isActive(item.path) ? styles.active : ''}`}
+                        onClick={() => router.push(item.path)}
                     >
                         <div className={styles.navIcon}>{item.icon}</div>
 
                         {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
 
-                        {!collapsed && activeItem === item.id && (
+                        {!collapsed && isActive(item.path) && (
                             <div className={styles.activeIndicator}></div>
                         )}
                     </button>
@@ -120,10 +119,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                 <div className={styles.navDivider}></div>
 
                 {/* Logout */}
-                <button
-                    className={`${styles.navItem} ${styles.logout}`}
-                    onClick={logoutUser}
-                >
+                <button className={`${styles.navItem} ${styles.logout}`} onClick={logoutUser}>
                     <div className={styles.navIcon}>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
