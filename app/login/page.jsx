@@ -2,7 +2,7 @@
 
 import styles from "./auth.module.css";
 import { GoogleIcon, FeatureIcons } from "@/app/lib/authIcons";
-import { handleGoogleSignIn } from "@/app/lib/loginUtils";
+import { handleGoogleAuth } from "@/app/lib/loginUtils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -12,7 +12,7 @@ export default function LoginPage() {
 
   const signIn = async () => {
     setLoading(true);
-    const res = await handleGoogleSignIn();
+    const res = await handleGoogleAuth();
     setLoading(false);
 
     if (res.success) router.push("/dashboard");
