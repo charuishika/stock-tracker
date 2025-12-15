@@ -58,40 +58,31 @@ const Profile = () => {
         {/* === Navbar === */}
         <Navbar onMenuClick={() => setSidebarCollapsed(!sidebarCollapsed)} />
 
-        {/* === Profile Content (your friend's UI kept 100% same) === */}
+        {/* === Profile Content === */}
         <main className={styles.profileContainer}>
 
-          {/* Title Card */}
-          <div className={styles.card}>
-            <h1 className={styles.gradientText}>User Profile</h1>
-          </div>
-
-          {/* User Info Card */}
-          <div className={styles.card}>
-            <div className={styles.userInfoCard}>
-              <div className={styles.avatar}>
-                {user.initials}
-              </div>
-              <div className={styles.userDetails}>
-                <h2 className={styles.userName}>{user.name}</h2>
-                <p className={styles.userEmail}>{user.email}</p>
-              </div>
+          {/* User Info - No Card Wrapper */}
+          <div className={styles.userInfoCard}>
+            <div className={styles.avatar}>
+              {user.initials}
+            </div>
+            <div className={styles.userDetails}>
+              <h2 className={styles.userName}>{user.name}</h2>
+              <p className={styles.userEmail}>{user.email}</p>
             </div>
           </div>
 
-          {/* Action Buttons Card */}
-          <div className={styles.card}>
-            <div className={styles.actionsCard}>
-              <button className={`${styles.btn} ${styles.btnEdit}`} onClick={handleEdit}>
-                Edit Profile
-              </button>
-              <button className={`${styles.btn} ${styles.btnLogout}`} onClick={handleLogout}>
-                Logout
-              </button>
-              <button className={`${styles.btn} ${styles.btnDelete}`} onClick={handleDeleteClick}>
-                Delete Account
-              </button>
-            </div>
+          {/* Action Buttons - No Card Wrapper */}
+          <div className={styles.actionsCard}>
+            <button className={`${styles.btn} ${styles.btnEdit}`} onClick={handleEdit}>
+              Edit Profile
+            </button>
+            <button className={`${styles.btn} ${styles.btnLogout}`} onClick={handleLogout}>
+              Logout
+            </button>
+            <button className={`${styles.btn} ${styles.btnDelete}`} onClick={handleDeleteClick}>
+              Delete Account
+            </button>
           </div>
 
           {/* Delete Confirmation Modal */}
