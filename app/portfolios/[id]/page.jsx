@@ -6,7 +6,7 @@ import Sidebar from '../../components/Sidebar';
 import Navbar from '../../components/Navbar';
 import styles from './portfolioDetails.module.css';
 
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore'; // 🔴 updated
 import { db } from '@/app/lib/firebase';
 import { getTransactions } from '@/app/lib/firestoreUtils';
 
@@ -28,7 +28,6 @@ export default function PortfolioDetails() {
       try {
         setLoading(true);
 
-        // 1️⃣ Fetch portfolio
         const portfolioRef = doc(db, 'portfolios', portfolioId);
         const snap = await getDoc(portfolioRef);
 
@@ -37,15 +36,12 @@ export default function PortfolioDetails() {
           return;
         }
 
-        const portfolioData = {
+        setPortfolio({
           id: snap.id,
           ...snap.data(),
-        };
+        });
 
-        // 2️⃣ Fetch transactions
         const txns = await getTransactions(portfolioId);
-
-        setPortfolio(portfolioData);
         setTransactions(txns);
       } catch (err) {
         console.error(err);
@@ -59,6 +55,26 @@ export default function PortfolioDetails() {
   }, [portfolioId]);
 
   /* =========================
+     DELETE PORTFOLIO  🔴 NEW
+  ========================== */
+  const handleDeletePortfolio = async () => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this portfolio?\nThis action cannot be undone.'
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteDoc(doc(db, 'portfolios', portfolioId));
+      alert('Portfolio deleted successfully');
+      router.push('/portfolios');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete portfolio');
+    }
+  };
+
+  /* =========================
      CALCULATIONS
   ========================== */
   const totalInvestment = transactions
@@ -70,9 +86,8 @@ export default function PortfolioDetails() {
     .reduce((sum, t) => sum + t.quantity * t.price, 0);
 
   const netValue = totalInvestment - totalSold;
-  const profitLoss = -totalSold; // simplified (can be improved later)
 
-  const formatCurrency = (amount) =>
+  const formatCurrency = amount =>
     new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
@@ -99,9 +114,6 @@ export default function PortfolioDetails() {
     );
   }
 
-  /* =========================
-     NOT FOUND
-  ========================== */
   if (!portfolio) {
     return (
       <div className={styles.pageContainer}>
@@ -111,9 +123,7 @@ export default function PortfolioDetails() {
           <main className={styles.content}>
             <div className={styles.errorContainer}>
               <h2>Portfolio Not Found</h2>
-              <button className={styles.backButton} onClick={() => router.push('/portfolios')}>
-                Back to Portfolios
-              </button>
+              <button onClick={() => router.push('/portfolios')}>Back</button>
             </div>
           </main>
         </div>
@@ -136,7 +146,13 @@ export default function PortfolioDetails() {
             <button className={styles.backButton} onClick={() => router.push('/portfolios')}>
               ← Back
             </button>
+
             <h1 className={styles.title}>{portfolio.portfolioName}</h1>
+
+            {/* 🔴 DELETE BUTTON */}
+            <button className={styles.deleteButton} onClick={handleDeletePortfolio}>
+              Delete Portfolio
+            </button>
           </div>
 
           {/* STATS */}
