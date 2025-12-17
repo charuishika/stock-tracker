@@ -22,8 +22,8 @@
   animation: fadeIn 0.5s ease;
 }
 
-/* Page Header */
-.pageHeader {
+/* ORGANIZED HEADER LAYOUT */
+.headerWrapper {
   margin-bottom: 30px;
   animation: slideDown 0.5s ease;
 }
@@ -56,9 +56,39 @@
   height: 18px;
 }
 
-/* Delete Portfolio Button */
+.titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.titleContent {
+  flex: 1;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.description {
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
 .deleteButton {
-  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 20px;
   background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
@@ -69,6 +99,7 @@
   cursor: pointer;
   font-family: 'Poppins', sans-serif;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .deleteButton:hover {
@@ -84,23 +115,9 @@
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
-/* Header alignment fix (ensures proper spacing) */
-.pageHeader {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-
-.title {
-  font-size: 36px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 8px;
+.deleteButton svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* Stats Row */
@@ -241,11 +258,23 @@
   font-weight: 500;
 }
 
-.stockProfit {
-  font-size: 20px;
+.typeBadge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.buyBadge {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.sellBadge {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
 }
 
 .stockDetails {
@@ -274,6 +303,48 @@
   color: #1f2937;
 }
 
+/* Empty Transactions State */
+.emptyTransactions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.emptyIcon svg {
+  width: 40px;
+  height: 40px;
+  stroke: #667EEA;
+}
+
+.emptyTransactions h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.emptyTransactions p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
 /* Profit/Loss Colors */
 .profitPositive {
   color: #10b981;
@@ -281,14 +352,6 @@
 
 .profitNegative {
   color: #ef4444;
-}
-
-.stockProfit.profitPositive {
-  background: rgba(16, 185, 129, 0.1);
-}
-
-.stockProfit.profitNegative {
-  background: rgba(239, 68, 68, 0.1);
 }
 
 /* Loading State */
@@ -427,11 +490,6 @@
   .stockName {
     font-size: 16px;
   }
-
-  .stockProfit {
-    font-size: 16px;
-    padding: 6px 12px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -449,11 +507,6 @@
 
   .stockHeader {
     flex-wrap: wrap;
-  }
-
-  .stockProfit {
-    width: 100%;
-    text-align: center;
   }
 
   .stockDetails {
