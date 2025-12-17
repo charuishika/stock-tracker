@@ -35,7 +35,6 @@ export async function createUserIfNotExists(user) {
         createdAt: serverTimestamp(),
       });
     }
-
   } catch (err) {
     console.error("Error creating user:", err);
     throw err;
@@ -62,7 +61,6 @@ export async function createPortfolio(userId, portfolioName) {
       id: ref.id,
       success: true
     };
-
   } catch (err) {
     console.error("Error creating portfolio:", err);
     throw err;
@@ -84,7 +82,6 @@ export async function getPortfolios(userId) {
       id: doc.id,
       ...doc.data()
     }));
-
   } catch (err) {
     console.error("Error fetching portfolios:", err);
     return [];
@@ -98,7 +95,6 @@ export async function deletePortfolio(portfolioId) {
     await deleteDoc(doc(db, "portfolios", portfolioId));
 
     return { success: true };
-
   } catch (err) {
     console.error("Error deleting portfolio:", err);
     throw err;
@@ -123,7 +119,6 @@ export async function addTransaction(data) {
       id: ref.id,
       success: true
     };
-
   } catch (err) {
     console.error("Error adding transaction:", err);
     throw err;
@@ -145,9 +140,30 @@ export async function getTransactions(portfolioId) {
       id: doc.id,
       ...doc.data()
     }));
-
   } catch (err) {
     console.error("Error fetching transactions:", err);
+    return [];
+  }
+}
+
+/* 🔥 NEW: Get ALL transactions for user */
+export async function getAllTransactions(userId) {
+  try {
+    if (!userId) return [];
+
+    const q = query(
+      collection(db, "stockTransactions"),
+      where("userId", "==", userId)
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (err) {
+    console.error("Error fetching all transactions:", err);
     return [];
   }
 }
@@ -159,9 +175,41 @@ export async function deleteTransaction(txnId) {
     await deleteDoc(doc(db, "stockTransactions", txnId));
 
     return { success: true };
-
   } catch (err) {
     console.error("Error deleting transaction:", err);
+    throw err;
+  }
+}
+
+/* ===============================================================
+   🔥 CASCADE DELETE (PORTFOLIO + TRANSACTIONS)
+================================================================ */
+
+export async function deletePortfolioCascade(portfolioId) {
+  try {
+    if (!portfolioId) throw new Error("Portfolio ID required");
+
+    // 1️⃣ Get all transactions of this portfolio
+    const q = query(
+      collection(db, "stockTransactions"),
+      where("portfolioId", "==", portfolioId)
+    );
+
+    const snapshot = await getDocs(q);
+
+    // 2️⃣ Delete each transaction
+    const deletePromises = snapshot.docs.map(d =>
+      deleteDoc(doc(db, "stockTransactions", d.id))
+    );
+
+    await Promise.all(deletePromises);
+
+    // 3️⃣ Delete portfolio
+    await deleteDoc(doc(db, "portfolios", portfolioId));
+
+    return { success: true };
+  } catch (err) {
+    console.error("Cascade delete failed:", err);
     throw err;
   }
 }
@@ -193,7 +241,6 @@ export async function getPortfolioStats(portfolioId) {
       currentValue,
       realizedPL
     };
-
   } catch (err) {
     console.error("Error calculating stats:", err);
     return {
