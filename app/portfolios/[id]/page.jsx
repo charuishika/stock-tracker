@@ -9,6 +9,8 @@ import styles from './portfolioDetails.module.css';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/app/lib/firebase';
 import { getTransactions } from '@/app/lib/firestoreUtils';
+import { deleteTransaction } from '@/app/lib/firestoreUtils';
+
 
 export default function PortfolioDetails() {
   const params = useParams();
@@ -58,21 +60,30 @@ export default function PortfolioDetails() {
      DELETE PORTFOLIO
   ========================== */
   const handleDeletePortfolio = async () => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${portfolio.portfolioName}"?\n\nThis will permanently delete this portfolio and all its transactions. This action cannot be undone.`
-    );
+  const confirmDelete = window.confirm(
+    `Are you sure you want to delete "${portfolio.portfolioName}"?\n\nThis will permanently delete this portfolio and all its transactions.`
+  );
 
-    if (!confirmDelete) return;
+  if (!confirmDelete) return;
 
-    try {
-      await deleteDoc(doc(db, 'portfolios', portfolioId));
-      alert('Portfolio deleted successfully');
-      router.push('/portfolios');
-    } catch (err) {
-      console.error('Error deleting portfolio:', err);
-      alert('Failed to delete portfolio. Please try again.');
+  try {
+    // 1️⃣ Delete all transactions under this portfolio
+    for (const txn of transactions) {
+      await deleteTransaction(txn.id);
     }
-  };
+
+    // 2️⃣ Delete portfolio
+    await deleteDoc(doc(db, 'portfolios', portfolioId));
+
+    alert('Portfolio and its transactions deleted successfully');
+    router.push('/portfolios');
+
+  } catch (err) {
+    console.error('Cascade delete failed:', err);
+    alert('Failed to delete portfolio. Try again.');
+  }
+};
+
 
   /* =========================
      CALCULATIONS
