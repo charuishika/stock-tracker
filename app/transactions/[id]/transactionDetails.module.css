@@ -22,8 +22,10 @@
   animation: fadeIn 0.5s ease;
 }
 
-/* Page Header */
-.pageHeader {
+/* =========================
+   HEADER
+========================== */
+.headerWrapper {
   margin-bottom: 30px;
   animation: slideDown 0.5s ease;
 }
@@ -49,11 +51,11 @@
   border-color: #667EEA;
   color: #667EEA;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  transform: translateX(-4px);
 }
 
-.backButton svg {
-  width: 18px;
-  height: 18px;
+.titleSection {
+  margin-bottom: 0;
 }
 
 .title {
@@ -63,38 +65,36 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 8px;
 }
 
-.subtitle {
-  font-size: 16px;
-  color: #6b7280;
-  font-weight: 400;
-}
-
-/* Details Card */
+/* =========================
+   DETAILS CARD
+========================== */
 .detailsCard {
   background: white;
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 32px;
+  margin-bottom: 24px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  margin-bottom: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.02);
   animation: slideUp 0.6s ease;
   transition: all 0.3s ease;
 }
 
 .detailsCard:hover {
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* Stock Header */
+/* =========================
+   STOCK HEADER
+========================== */
 .stockHeader {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   padding-bottom: 24px;
-  border-bottom: 2px solid #f3f4f6;
-  margin-bottom: 24px;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 32px;
 }
 
 .stockIcon {
@@ -116,6 +116,7 @@
 
 .stockInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .stockName {
@@ -123,6 +124,9 @@
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stockSymbol {
@@ -140,71 +144,51 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
 .buyBadge {
   background: rgba(16, 185, 129, 0.1);
   color: #10b981;
-  border: 2px solid rgba(16, 185, 129, 0.3);
+  border: 2px solid rgba(16, 185, 129, 0.2);
 }
 
 .sellBadge {
   background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
-  border: 2px solid rgba(239, 68, 68, 0.3);
+  border: 2px solid rgba(239, 68, 68, 0.2);
 }
 
-/* Portfolio Section */
-.portfolioSection {
-  margin-bottom: 32px;
-}
-
-.portfolioTag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border: 1px solid rgba(102, 126, 234, 0.2);
-  border-radius: 12px;
-  font-size: 14px;
-  color: #667EEA;
-  font-weight: 600;
-}
-
-.portfolioTag svg {
-  width: 18px;
-  height: 18px;
-  stroke: #667EEA;
-}
-
-/* Details Grid */
+/* =========================
+   DETAILS GRID
+========================== */
 .detailsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
   margin-bottom: 32px;
 }
 
 .detailItem {
   padding: 20px;
-  background: #f9fafb;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%);
   border-radius: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid rgba(102, 126, 234, 0.1);
   transition: all 0.3s ease;
 }
 
 .detailItem:hover {
   background: white;
-  border-color: #667EEA;
+  border-color: rgba(102, 126, 234, 0.3);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
 }
 
 .detailLabel {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 12px;
   color: #6b7280;
   font-weight: 600;
   text-transform: uppercase;
@@ -222,53 +206,25 @@
   font-size: 20px;
   font-weight: 700;
   color: #1f2937;
+  word-break: break-word;
 }
 
 .totalAmount {
-  font-size: 24px;
+  font-size: 22px;
   background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Notes Section */
-.notesSection {
-  padding: 24px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  margin-bottom: 32px;
-}
-
-.notesTitle {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 12px;
-}
-
-.notesTitle svg {
-  width: 20px;
-  height: 20px;
-  stroke: #667EEA;
-}
-
-.notesText {
-  font-size: 15px;
-  color: #4b5563;
-  line-height: 1.7;
-}
-
-/* Action Buttons */
+/* =========================
+   ACTION BUTTONS
+========================== */
 .actionButtons {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   padding-top: 24px;
-  border-top: 2px solid #f3f4f6;
+  border-top: 1px solid #f3f4f6;
 }
 
 .editButton,
@@ -279,13 +235,13 @@
   justify-content: center;
   gap: 8px;
   padding: 14px 24px;
-  border: none;
   border-radius: 12px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
+  border: none;
 }
 
 .editButton {
@@ -294,25 +250,25 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-.editButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-}
-
 .editButton svg {
   width: 18px;
   height: 18px;
 }
 
-.deleteButton {
-  background: white;
-  color: #ef4444;
-  border: 2px solid #fecaca;
+.editButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
 }
 
-.deleteButton:hover {
-  background: rgba(239, 68, 68, 0.05);
-  border-color: #ef4444;
+.editButton:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.deleteButton {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 2px solid rgba(239, 68, 68, 0.3);
 }
 
 .deleteButton svg {
@@ -320,42 +276,47 @@
   height: 18px;
 }
 
-/* Related Section */
+.deleteButton:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border-color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+}
+
+.deleteButton:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* =========================
+   RELATED SECTION
+========================== */
 .relatedSection {
   animation: slideUp 0.7s ease;
 }
 
-.sectionTitle {
-  font-size: 22px;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 20px;
-}
-
-.infoGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-
-.infoCard {
+.portfolioCard {
   background: white;
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.02);
   display: flex;
+  align-items: center;
   gap: 20px;
   transition: all 0.3s ease;
 }
 
-.infoCard:hover {
+.portfolioCard:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1);
 }
 
-.infoIcon {
+.portfolioIcon {
   width: 56px;
   height: 56px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -363,42 +324,31 @@
   flex-shrink: 0;
 }
 
-.infoIcon svg {
+.portfolioIcon svg {
   width: 28px;
   height: 28px;
-  stroke: white;
+  stroke: #667EEA;
 }
 
-.infoContent {
+.portfolioInfo {
   flex: 1;
 }
 
-.infoLabel {
+.portfolioLabel {
+  display: block;
   font-size: 12px;
   color: #9ca3af;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 6px;
-}
-
-.infoValue {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1f2937;
   margin-bottom: 8px;
 }
 
-.infoDescription {
-  font-size: 13px;
-  color: #6b7280;
-}
-
 .viewLink {
-  margin-top: 8px;
   display: inline-flex;
   align-items: center;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 15px;
   color: #667EEA;
   font-weight: 600;
   background: none;
@@ -406,6 +356,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
+  padding: 0;
+}
+
+.viewLink svg {
+  width: 18px;
+  height: 18px;
 }
 
 .viewLink:hover {
@@ -413,7 +369,9 @@
   transform: translateX(4px);
 }
 
-/* Loading State */
+/* =========================
+   LOADING & ERROR
+========================== */
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -438,7 +396,6 @@
   font-weight: 500;
 }
 
-/* Error State */
 .errorContainer {
   display: flex;
   flex-direction: column;
@@ -456,11 +413,11 @@
   width: 80px;
   height: 80px;
   background: rgba(239, 68, 68, 0.1);
-  border-radius: 50%;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .errorIcon svg {
@@ -480,9 +437,12 @@
   font-size: 16px;
   color: #6b7280;
   margin-bottom: 32px;
+  max-width: 400px;
 }
 
-/* Animations */
+/* =========================
+   ANIMATIONS
+========================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -520,7 +480,9 @@
   }
 }
 
-/* Responsive */
+/* =========================
+   RESPONSIVE
+========================== */
 @media (max-width: 1024px) {
   .mainContent {
     margin-left: 0;
@@ -553,12 +515,17 @@
     height: 56px;
   }
 
+  .stockIcon svg {
+    width: 28px;
+    height: 28px;
+  }
+
   .stockName {
     font-size: 20px;
   }
 
   .detailsGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .actionButtons {
@@ -570,8 +537,8 @@
     width: 100%;
   }
 
-  .infoGrid {
-    grid-template-columns: 1fr;
+  .portfolioCard {
+    padding: 20px;
   }
 }
 
@@ -588,8 +555,26 @@
     padding: 20px;
   }
 
+  .stockHeader {
+    gap: 12px;
+  }
+
+  .stockIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .stockIcon svg {
+    width: 24px;
+    height: 24px;
+  }
+
   .stockName {
     font-size: 18px;
+  }
+
+  .detailsGrid {
+    grid-template-columns: 1fr;
   }
 
   .detailValue {
@@ -598,5 +583,15 @@
 
   .totalAmount {
     font-size: 20px;
+  }
+
+  .portfolioIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .portfolioIcon svg {
+    width: 24px;
+    height: 24px;
   }
 }

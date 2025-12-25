@@ -7,7 +7,6 @@ import {
   setDoc,
   getDoc,
   getDocs,
-  updateDoc,
   deleteDoc,
   query,
   where,
@@ -57,10 +56,7 @@ export async function createPortfolio(userId, portfolioName) {
       createdAt: serverTimestamp(),
     });
 
-    return {
-      id: ref.id,
-      success: true
-    };
+    return { id: ref.id, success: true };
   } catch (err) {
     console.error("Error creating portfolio:", err);
     throw err;
@@ -91,9 +87,7 @@ export async function getPortfolios(userId) {
 export async function deletePortfolio(portfolioId) {
   try {
     if (!portfolioId) throw new Error("Portfolio ID required");
-
     await deleteDoc(doc(db, "portfolios", portfolioId));
-
     return { success: true };
   } catch (err) {
     console.error("Error deleting portfolio:", err);
@@ -107,18 +101,15 @@ export async function deletePortfolio(portfolioId) {
 
 export async function addTransaction(data) {
   try {
-    if (!data || !data.portfolioId)
-      throw new Error("Portfolio ID is required for transaction");
+    if (!data?.portfolioId) throw new Error("Portfolio ID required");
+    if (!data?.userId) throw new Error("User ID required"); // 🔥 IMPORTANT
 
     const ref = await addDoc(collection(db, "stockTransactions"), {
       ...data,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
     });
 
-    return {
-      id: ref.id,
-      success: true
-    };
+    return { id: ref.id, success: true };
   } catch (err) {
     console.error("Error adding transaction:", err);
     throw err;
@@ -146,7 +137,7 @@ export async function getTransactions(portfolioId) {
   }
 }
 
-/* 🔥 NEW: Get ALL transactions for user */
+/* 🔥 GET ALL TRANSACTIONS FOR USER */
 export async function getAllTransactions(userId) {
   try {
     if (!userId) return [];
@@ -171,9 +162,7 @@ export async function getAllTransactions(userId) {
 export async function deleteTransaction(txnId) {
   try {
     if (!txnId) throw new Error("Transaction ID required");
-
     await deleteDoc(doc(db, "stockTransactions", txnId));
-
     return { success: true };
   } catch (err) {
     console.error("Error deleting transaction:", err);
@@ -182,14 +171,13 @@ export async function deleteTransaction(txnId) {
 }
 
 /* ===============================================================
-   🔥 CASCADE DELETE (PORTFOLIO + TRANSACTIONS)
+   🔥 CASCADE DELETE
 ================================================================ */
 
 export async function deletePortfolioCascade(portfolioId) {
   try {
     if (!portfolioId) throw new Error("Portfolio ID required");
 
-    // 1️⃣ Get all transactions of this portfolio
     const q = query(
       collection(db, "stockTransactions"),
       where("portfolioId", "==", portfolioId)
@@ -197,14 +185,12 @@ export async function deletePortfolioCascade(portfolioId) {
 
     const snapshot = await getDocs(q);
 
-    // 2️⃣ Delete each transaction
-    const deletePromises = snapshot.docs.map(d =>
-      deleteDoc(doc(db, "stockTransactions", d.id))
+    await Promise.all(
+      snapshot.docs.map(d =>
+        deleteDoc(doc(db, "stockTransactions", d.id))
+      )
     );
 
-    await Promise.all(deletePromises);
-
-    // 3️⃣ Delete portfolio
     await deleteDoc(doc(db, "portfolios", portfolioId));
 
     return { success: true };
@@ -223,30 +209,16 @@ export async function getPortfolioStats(portfolioId) {
     const txns = await getTransactions(portfolioId);
 
     let totalInvestment = 0;
-    let currentValue = 0;
     let realizedPL = 0;
 
-    txns.forEach((t) => {
+    txns.forEach(t => {
       const amount = t.quantity * t.price;
-
-      if (t.buyOrSell === "buy") {
-        totalInvestment += amount;
-      } else if (t.buyOrSell === "sell") {
-        realizedPL += amount;
-      }
+      if (t.buyOrSell === "buy") totalInvestment += amount;
+      else realizedPL += amount;
     });
 
-    return {
-      totalInvestment,
-      currentValue,
-      realizedPL
-    };
-  } catch (err) {
-    console.error("Error calculating stats:", err);
-    return {
-      totalInvestment: 0,
-      currentValue: 0,
-      realizedPL: 0
-    };
+    return { totalInvestment, realizedPL };
+  } catch {
+    return { totalInvestment: 0, realizedPL: 0 };
   }
 }
